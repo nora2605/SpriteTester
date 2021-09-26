@@ -51,6 +51,8 @@ namespace SpriteTester.Forms
 
             sprites = remapSprites();
 
+            // Check for Base Idle Sprites
+
             if (options.background == null)
                 return;
             bgPresent = true;
@@ -84,21 +86,21 @@ namespace SpriteTester.Forms
             if (bgPresent)
                 buffer.Graphics.DrawImage(options.background, 0, 0, Width, Height);
 
-            if (options.idleSprites.Length == 0)
-            {
-                timer.Enabled = false;
-                MessageBox.Show("You need at least one Idle Sprite", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Close();
-                return;
-            }
+            Image curSprite;
+
+            // If the current action type is available as sprite, choose that
+            // If not, take the idle sprite in the same direction and **correct phase**
+            
 
             buffer.Graphics.DrawImage(sprites[(int)ActionType.Idle][(int)Direction.Right][phase], new Point(zyra.posX, zyra.posY));
 
             buffer.Render(g);
 
             // Logic
+
             if (zyra.actiontype != ActionType.Idle)
             {
+                // Execute Idle Counter - go back to idle mode after certain time
                 toIdle--;
                 if (toIdle == 0)
                 {
@@ -107,6 +109,13 @@ namespace SpriteTester.Forms
             }
         }
 
+        // Get sprite list length for certain action and direction
+        private int GetMaxSprite(ActionType at, Direction dir)
+        {
+            return sprites[(int)at][(int)dir].Length;
+        }
+
+        // Stop timer and dispose Graphics before exiting, might else call again and throw an exception
         private void PlaygroundForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             timer.Enabled = false;
@@ -114,6 +123,7 @@ namespace SpriteTester.Forms
             g.Dispose();
         }
 
+        // Remap the Sprites from seperate objects lists with tuples to a 3D array :)
         private Image[][][] remapSprites()
         {
             List<Image[][]> sprites = new List<Image[][]>();
@@ -154,6 +164,8 @@ namespace SpriteTester.Forms
             return sprites.ToArray();
         }
 
+
+        // Key Down Event; Do stuff ig
         private void move(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -170,12 +182,12 @@ namespace SpriteTester.Forms
 
                 case Keys.A:
                 case Keys.Left:
-
+                    zyra.facing = Direction.Left;
                     break;
 
                 case Keys.D:
                 case Keys.Right:
-
+                    zyra.facing = Direction.Right;
                     break;
 
                 case Keys.Space:
