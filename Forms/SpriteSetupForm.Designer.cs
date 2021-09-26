@@ -29,7 +29,10 @@ namespace SpriteTester
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.listIdleSprites = new System.Windows.Forms.ListView();
+            this.itemEditor = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.MIChangeDirection = new System.Windows.Forms.ToolStripMenuItem();
             this.labelIdleSprites = new System.Windows.Forms.Label();
             this.buttonOpenIdleSprites = new System.Windows.Forms.Button();
             this.buttonOpenJumpingSprites = new System.Windows.Forms.Button();
@@ -45,18 +48,40 @@ namespace SpriteTester
             this.buttonHelp = new System.Windows.Forms.Button();
             this.radioButtonTopDownView = new System.Windows.Forms.RadioButton();
             this.radioButtonSideView = new System.Windows.Forms.RadioButton();
+            this.openFileDialogA = new System.Windows.Forms.OpenFileDialog();
+            this.numSpriteDelay = new System.Windows.Forms.NumericUpDown();
+            this.labelSpriteDelay = new System.Windows.Forms.Label();
+            this.itemEditor.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSpriteDelay)).BeginInit();
             this.SuspendLayout();
             // 
             // listIdleSprites
             // 
+            this.listIdleSprites.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listIdleSprites.ContextMenuStrip = this.itemEditor;
             this.listIdleSprites.GridLines = true;
             this.listIdleSprites.HideSelection = false;
             this.listIdleSprites.Location = new System.Drawing.Point(12, 29);
             this.listIdleSprites.Name = "listIdleSprites";
-            this.listIdleSprites.Size = new System.Drawing.Size(163, 100);
+            this.listIdleSprites.Size = new System.Drawing.Size(414, 150);
             this.listIdleSprites.TabIndex = 0;
             this.listIdleSprites.UseCompatibleStateImageBehavior = false;
             this.listIdleSprites.View = System.Windows.Forms.View.Details;
+            // 
+            // itemEditor
+            // 
+            this.itemEditor.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MIChangeDirection});
+            this.itemEditor.Name = "itemEditor";
+            this.itemEditor.Size = new System.Drawing.Size(176, 26);
+            // 
+            // MIChangeDirection
+            // 
+            this.MIChangeDirection.Name = "MIChangeDirection";
+            this.MIChangeDirection.Size = new System.Drawing.Size(175, 22);
+            this.MIChangeDirection.Text = "Change Direction...";
+            this.MIChangeDirection.Click += new System.EventHandler(this.changeDirection);
             // 
             // labelIdleSprites
             // 
@@ -73,22 +98,28 @@ namespace SpriteTester
             this.buttonOpenIdleSprites.Name = "buttonOpenIdleSprites";
             this.buttonOpenIdleSprites.Size = new System.Drawing.Size(75, 20);
             this.buttonOpenIdleSprites.TabIndex = 2;
+            this.buttonOpenIdleSprites.Tag = "idle";
             this.buttonOpenIdleSprites.Text = "Choose...";
             this.buttonOpenIdleSprites.UseVisualStyleBackColor = true;
+            this.buttonOpenIdleSprites.Click += new System.EventHandler(this.chooseSprites);
             // 
             // buttonOpenJumpingSprites
             // 
-            this.buttonOpenJumpingSprites.Location = new System.Drawing.Point(294, 9);
+            this.buttonOpenJumpingSprites.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOpenJumpingSprites.Location = new System.Drawing.Point(771, 9);
             this.buttonOpenJumpingSprites.Name = "buttonOpenJumpingSprites";
             this.buttonOpenJumpingSprites.Size = new System.Drawing.Size(75, 20);
             this.buttonOpenJumpingSprites.TabIndex = 5;
+            this.buttonOpenJumpingSprites.Tag = "jump";
             this.buttonOpenJumpingSprites.Text = "Choose...";
             this.buttonOpenJumpingSprites.UseVisualStyleBackColor = true;
+            this.buttonOpenJumpingSprites.Click += new System.EventHandler(this.chooseSprites);
             // 
             // labelJumpingSprites
             // 
+            this.labelJumpingSprites.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelJumpingSprites.AutoSize = true;
-            this.labelJumpingSprites.Location = new System.Drawing.Point(203, 13);
+            this.labelJumpingSprites.Location = new System.Drawing.Point(680, 13);
             this.labelJumpingSprites.Name = "labelJumpingSprites";
             this.labelJumpingSprites.Size = new System.Drawing.Size(84, 13);
             this.labelJumpingSprites.TabIndex = 4;
@@ -96,28 +127,34 @@ namespace SpriteTester
             // 
             // listJumpingSprites
             // 
+            this.listJumpingSprites.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.listJumpingSprites.ContextMenuStrip = this.itemEditor;
             this.listJumpingSprites.GridLines = true;
             this.listJumpingSprites.HideSelection = false;
-            this.listJumpingSprites.Location = new System.Drawing.Point(206, 29);
+            this.listJumpingSprites.Location = new System.Drawing.Point(432, 29);
             this.listJumpingSprites.Name = "listJumpingSprites";
-            this.listJumpingSprites.Size = new System.Drawing.Size(163, 100);
+            this.listJumpingSprites.Size = new System.Drawing.Size(414, 150);
             this.listJumpingSprites.TabIndex = 3;
             this.listJumpingSprites.UseCompatibleStateImageBehavior = false;
             this.listJumpingSprites.View = System.Windows.Forms.View.Details;
             // 
             // buttonOpenWalkingSprites
             // 
-            this.buttonOpenWalkingSprites.Location = new System.Drawing.Point(100, 147);
+            this.buttonOpenWalkingSprites.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonOpenWalkingSprites.Location = new System.Drawing.Point(100, 185);
             this.buttonOpenWalkingSprites.Name = "buttonOpenWalkingSprites";
             this.buttonOpenWalkingSprites.Size = new System.Drawing.Size(75, 20);
             this.buttonOpenWalkingSprites.TabIndex = 8;
+            this.buttonOpenWalkingSprites.Tag = "walk";
             this.buttonOpenWalkingSprites.Text = "Choose...";
             this.buttonOpenWalkingSprites.UseVisualStyleBackColor = true;
+            this.buttonOpenWalkingSprites.Click += new System.EventHandler(this.chooseSprites);
             // 
             // labelWalkingSprites
             // 
+            this.labelWalkingSprites.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelWalkingSprites.AutoSize = true;
-            this.labelWalkingSprites.Location = new System.Drawing.Point(9, 151);
+            this.labelWalkingSprites.Location = new System.Drawing.Point(9, 189);
             this.labelWalkingSprites.Name = "labelWalkingSprites";
             this.labelWalkingSprites.Size = new System.Drawing.Size(84, 13);
             this.labelWalkingSprites.TabIndex = 7;
@@ -125,47 +162,57 @@ namespace SpriteTester
             // 
             // listWalkingSprites
             // 
+            this.listWalkingSprites.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listWalkingSprites.ContextMenuStrip = this.itemEditor;
             this.listWalkingSprites.GridLines = true;
             this.listWalkingSprites.HideSelection = false;
-            this.listWalkingSprites.Location = new System.Drawing.Point(12, 167);
+            this.listWalkingSprites.Location = new System.Drawing.Point(12, 205);
             this.listWalkingSprites.Name = "listWalkingSprites";
-            this.listWalkingSprites.Size = new System.Drawing.Size(163, 100);
+            this.listWalkingSprites.Size = new System.Drawing.Size(414, 150);
             this.listWalkingSprites.TabIndex = 6;
             this.listWalkingSprites.UseCompatibleStateImageBehavior = false;
             this.listWalkingSprites.View = System.Windows.Forms.View.Details;
             // 
             // buttonOpenActionSprites
             // 
-            this.buttonOpenActionSprites.Location = new System.Drawing.Point(294, 147);
+            this.buttonOpenActionSprites.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOpenActionSprites.Location = new System.Drawing.Point(771, 185);
             this.buttonOpenActionSprites.Name = "buttonOpenActionSprites";
             this.buttonOpenActionSprites.Size = new System.Drawing.Size(75, 20);
             this.buttonOpenActionSprites.TabIndex = 11;
             this.buttonOpenActionSprites.Text = "Choose...";
             this.buttonOpenActionSprites.UseVisualStyleBackColor = true;
+            this.buttonOpenActionSprites.Click += new System.EventHandler(this.chooseSprites);
             // 
             // labelActionSprites
             // 
+            this.labelActionSprites.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.labelActionSprites.AutoSize = true;
-            this.labelActionSprites.Location = new System.Drawing.Point(203, 151);
+            this.labelActionSprites.Location = new System.Drawing.Point(680, 189);
             this.labelActionSprites.Name = "labelActionSprites";
             this.labelActionSprites.Size = new System.Drawing.Size(75, 13);
             this.labelActionSprites.TabIndex = 10;
+            this.labelActionSprites.Tag = "action";
             this.labelActionSprites.Text = "Action Sprites:";
             // 
             // listActionSprites
             // 
+            this.listActionSprites.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.listActionSprites.ContextMenuStrip = this.itemEditor;
             this.listActionSprites.GridLines = true;
             this.listActionSprites.HideSelection = false;
-            this.listActionSprites.Location = new System.Drawing.Point(206, 167);
+            this.listActionSprites.Location = new System.Drawing.Point(432, 205);
             this.listActionSprites.Name = "listActionSprites";
-            this.listActionSprites.Size = new System.Drawing.Size(163, 100);
+            this.listActionSprites.Size = new System.Drawing.Size(414, 150);
             this.listActionSprites.TabIndex = 9;
             this.listActionSprites.UseCompatibleStateImageBehavior = false;
             this.listActionSprites.View = System.Windows.Forms.View.Details;
             // 
             // buttonOpenPlayground
             // 
-            this.buttonOpenPlayground.Location = new System.Drawing.Point(256, 365);
+            this.buttonOpenPlayground.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOpenPlayground.Location = new System.Drawing.Point(733, 462);
             this.buttonOpenPlayground.Name = "buttonOpenPlayground";
             this.buttonOpenPlayground.Size = new System.Drawing.Size(112, 23);
             this.buttonOpenPlayground.TabIndex = 12;
@@ -175,17 +222,20 @@ namespace SpriteTester
             // 
             // buttonHelp
             // 
-            this.buttonHelp.Location = new System.Drawing.Point(13, 364);
+            this.buttonHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonHelp.Location = new System.Drawing.Point(13, 461);
             this.buttonHelp.Name = "buttonHelp";
             this.buttonHelp.Size = new System.Drawing.Size(75, 23);
             this.buttonHelp.TabIndex = 13;
             this.buttonHelp.Text = "Help";
             this.buttonHelp.UseVisualStyleBackColor = true;
+            this.buttonHelp.Click += new System.EventHandler(this.showHelpDialog);
             // 
             // radioButtonTopDownView
             // 
+            this.radioButtonTopDownView.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.radioButtonTopDownView.AutoSize = true;
-            this.radioButtonTopDownView.Location = new System.Drawing.Point(13, 274);
+            this.radioButtonTopDownView.Location = new System.Drawing.Point(13, 436);
             this.radioButtonTopDownView.Name = "radioButtonTopDownView";
             this.radioButtonTopDownView.Size = new System.Drawing.Size(101, 17);
             this.radioButtonTopDownView.TabIndex = 14;
@@ -195,8 +245,10 @@ namespace SpriteTester
             // 
             // radioButtonSideView
             // 
+            this.radioButtonSideView.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.radioButtonSideView.AutoSize = true;
-            this.radioButtonSideView.Location = new System.Drawing.Point(12, 298);
+            this.radioButtonSideView.Checked = true;
+            this.radioButtonSideView.Location = new System.Drawing.Point(13, 415);
             this.radioButtonSideView.Name = "radioButtonSideView";
             this.radioButtonSideView.Size = new System.Drawing.Size(72, 17);
             this.radioButtonSideView.TabIndex = 15;
@@ -204,11 +256,42 @@ namespace SpriteTester
             this.radioButtonSideView.Text = "Side View";
             this.radioButtonSideView.UseVisualStyleBackColor = true;
             // 
+            // openFileDialogA
+            // 
+            this.openFileDialogA.Filter = "Image Files|*.png; *.jpg; *.bmp";
+            this.openFileDialogA.Multiselect = true;
+            this.openFileDialogA.Title = "Choose Sprites...";
+            // 
+            // numSpriteDelay
+            // 
+            this.numSpriteDelay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.numSpriteDelay.Location = new System.Drawing.Point(725, 436);
+            this.numSpriteDelay.Name = "numSpriteDelay";
+            this.numSpriteDelay.Size = new System.Drawing.Size(120, 20);
+            this.numSpriteDelay.TabIndex = 16;
+            this.numSpriteDelay.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // labelSpriteDelay
+            // 
+            this.labelSpriteDelay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelSpriteDelay.AutoSize = true;
+            this.labelSpriteDelay.Location = new System.Drawing.Point(725, 417);
+            this.labelSpriteDelay.Name = "labelSpriteDelay";
+            this.labelSpriteDelay.Size = new System.Drawing.Size(89, 13);
+            this.labelSpriteDelay.TabIndex = 17;
+            this.labelSpriteDelay.Text = "Sprite Delay (ms):";
+            // 
             // SpriteSetupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(380, 400);
+            this.ClientSize = new System.Drawing.Size(857, 497);
+            this.Controls.Add(this.labelSpriteDelay);
+            this.Controls.Add(this.numSpriteDelay);
             this.Controls.Add(this.radioButtonSideView);
             this.Controls.Add(this.radioButtonTopDownView);
             this.Controls.Add(this.buttonHelp);
@@ -225,8 +308,11 @@ namespace SpriteTester
             this.Controls.Add(this.buttonOpenIdleSprites);
             this.Controls.Add(this.labelIdleSprites);
             this.Controls.Add(this.listIdleSprites);
+            this.MinimumSize = new System.Drawing.Size(600, 500);
             this.Name = "SpriteSetupForm";
             this.Text = "Sprite Tester";
+            this.itemEditor.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numSpriteDelay)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -250,6 +336,11 @@ namespace SpriteTester
         private System.Windows.Forms.Button buttonHelp;
         private System.Windows.Forms.RadioButton radioButtonTopDownView;
         private System.Windows.Forms.RadioButton radioButtonSideView;
+        private System.Windows.Forms.OpenFileDialog openFileDialogA;
+        private System.Windows.Forms.NumericUpDown numSpriteDelay;
+        private System.Windows.Forms.Label labelSpriteDelay;
+        private System.Windows.Forms.ContextMenuStrip itemEditor;
+        private System.Windows.Forms.ToolStripMenuItem MIChangeDirection;
     }
 }
 

@@ -1,5 +1,5 @@
 ﻿
-namespace SpriteTester
+namespace SpriteTester.Forms
 {
     partial class PlaygroundForm
     {
