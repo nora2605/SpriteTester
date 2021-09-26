@@ -28,6 +28,7 @@ namespace SpriteTester.Forms
         int platformHeight;
 
         int phase = 0;
+        int toIdle = 10;
 
         public PlaygroundForm()
         {
@@ -72,15 +73,38 @@ namespace SpriteTester.Forms
             Refresh();
         }
 
+        /// <summary>
+        /// Event Handler for the Timer Tick Event; Logic Loop
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event Arguments</param>
         private void timerTick(object sender, EventArgs e)
         {
+            // Render
             if (bgPresent)
                 buffer.Graphics.DrawImage(options.background, 0, 0, Width, Height);
 
-            if (options.idleSprites.Length == 0) return;
+            if (options.idleSprites.Length == 0)
+            {
+                timer.Enabled = false;
+                MessageBox.Show("You need at least one Idle Sprite", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
+                return;
+            }
+
             buffer.Graphics.DrawImage(sprites[(int)ActionType.Idle][(int)Direction.Right][phase], new Point(zyra.posX, zyra.posY));
 
             buffer.Render(g);
+
+            // Logic
+            if (zyra.actiontype != ActionType.Idle)
+            {
+                toIdle--;
+                if (toIdle == 0)
+                {
+                    zyra.actiontype = ActionType.Idle;
+                }
+            }
         }
 
         private void PlaygroundForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -132,7 +156,37 @@ namespace SpriteTester.Forms
 
         private void move(object sender, KeyEventArgs e)
         {
+            switch (e.KeyCode)
+            {
+                case Keys.W:
+                case Keys.Up:
 
+                    break;
+
+                case Keys.S:
+                case Keys.Down:
+
+                    break;
+
+                case Keys.A:
+                case Keys.Left:
+
+                    break;
+
+                case Keys.D:
+                case Keys.Right:
+
+                    break;
+
+                case Keys.Space:
+                    zyra.actiontype = ActionType.Jumping;
+                    break;
+
+                case Keys.Q:
+                case Keys.E:
+                    zyra.actiontype = ActionType.Acting;
+                    break;
+            }
         }
     }
 }
