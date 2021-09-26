@@ -51,6 +51,7 @@ namespace SpriteTester
             this.openFileDialogA = new System.Windows.Forms.OpenFileDialog();
             this.numSpriteDelay = new System.Windows.Forms.NumericUpDown();
             this.labelSpriteDelay = new System.Windows.Forms.Label();
+            this.buttonChangeBackground = new System.Windows.Forms.Button();
             this.itemEditor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSpriteDelay)).BeginInit();
             this.SuspendLayout();
@@ -285,11 +286,23 @@ namespace SpriteTester
             this.labelSpriteDelay.TabIndex = 17;
             this.labelSpriteDelay.Text = "Sprite Delay (ms):";
             // 
+            // buttonChangeBackground
+            // 
+            this.buttonChangeBackground.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonChangeBackground.Location = new System.Drawing.Point(12, 386);
+            this.buttonChangeBackground.Name = "buttonChangeBackground";
+            this.buttonChangeBackground.Size = new System.Drawing.Size(141, 23);
+            this.buttonChangeBackground.TabIndex = 18;
+            this.buttonChangeBackground.Text = "Change Background...";
+            this.buttonChangeBackground.UseVisualStyleBackColor = true;
+            this.buttonChangeBackground.Click += new System.EventHandler(this.openBackground);
+            // 
             // SpriteSetupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(857, 497);
+            this.Controls.Add(this.buttonChangeBackground);
             this.Controls.Add(this.labelSpriteDelay);
             this.Controls.Add(this.numSpriteDelay);
             this.Controls.Add(this.radioButtonSideView);
@@ -341,6 +354,7 @@ namespace SpriteTester
         private System.Windows.Forms.Label labelSpriteDelay;
         private System.Windows.Forms.ContextMenuStrip itemEditor;
         private System.Windows.Forms.ToolStripMenuItem MIChangeDirection;
+        private System.Windows.Forms.Button buttonChangeBackground;
     }
 }
 

@@ -19,6 +19,7 @@ namespace SpriteTester.HelperClasses
 
         public int spriteDelay;
         public ViewType viewType;
+        public Image background;
 
         /// <summary>
         /// Initializes empty Playground options
@@ -34,7 +35,7 @@ namespace SpriteTester.HelperClasses
         /// <param name="action">Array of Action Sprites</param>
         /// <param name="spriteDelay">Animation Delay in Milliseconds</param>
         /// <param name="viewType">The view type of the Playground</param>
-        public PGOptions(Sprite[] idle, Sprite[] walking, Sprite[] jumping, Sprite[] action, int spriteDelay, ViewType viewType)
+        public PGOptions(Sprite[] idle, Sprite[] walking, Sprite[] jumping, Sprite[] action, int spriteDelay, ViewType viewType, Image background)
         {
             this.idleSprites = idle;
             this.walkingSprites = walking;
@@ -43,6 +44,7 @@ namespace SpriteTester.HelperClasses
 
             this.spriteDelay = spriteDelay;
             this.viewType = viewType;
+            this.background = background;
         }
     }
 }

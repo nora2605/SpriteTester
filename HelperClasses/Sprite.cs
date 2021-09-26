@@ -9,8 +9,8 @@ namespace SpriteTester.HelperClasses
 {
     public class Sprite
     {
-        Image image;
-        Direction direction;
+        public Image image;
+        public Direction direction;
 
         public Sprite(Image image, Direction direction)
         {
