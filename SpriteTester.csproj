@@ -52,6 +52,8 @@
     <Compile Include="Forms\ChangeDirectionForm.Designer.cs">
       <DependentUpon>ChangeDirectionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="HelperClasses\ActionType.cs" />
+    <Compile Include="HelperClasses\Character.cs" />
     <Compile Include="HelperClasses\Direction.cs" />
     <Compile Include="Forms\PlaygroundForm.cs">
       <SubType>Form</SubType>

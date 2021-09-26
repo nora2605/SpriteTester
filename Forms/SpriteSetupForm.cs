@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SpriteTester.Forms;
@@ -14,6 +14,8 @@ namespace SpriteTester
 {
     public partial class SpriteSetupForm : Form
     {
+        private Image backgroundImage;
+
         public SpriteSetupForm()
         {
             InitializeComponent();
@@ -27,7 +29,7 @@ namespace SpriteTester
             ListView[] listViews = { listActionSprites, listIdleSprites, listJumpingSprites, listWalkingSprites };
             for (int i = 0; i < listViews.Length; i++) // iterate over them idfk
             {
-                ColumnHeader[] columns = new ColumnHeader[2]; //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                ColumnHeader[] columns = new ColumnHeader[3]; //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                 columns[0] = new ColumnHeader();
                 columns[0].Text = "Sprite";
                 columns[0].Name = "SpriteColumn";
@@ -37,6 +39,11 @@ namespace SpriteTester
                 columns[1].Text = "Direction";
                 columns[1].Name = "DirectionColumn";
                 columns[1].Width = 100;
+
+                columns[2] = new ColumnHeader();
+                columns[2].Text = "Path";
+                columns[2].Name = "PathColumn";
+                columns[2].Width = 100;
 
                 listViews[i].Columns.AddRange(columns); // add those
             }
@@ -52,7 +59,8 @@ namespace SpriteTester
                 GetJumpingSprites(), 
                 GetActionSprites(), 
                 (int)numSpriteDelay.Value, 
-                radioButtonSideView.Checked ? ViewType.Side : ViewType.TopDown
+                radioButtonSideView.Checked ? ViewType.Side : ViewType.TopDown,
+                backgroundImage
             );
             playground.ShowDialog();
         }
@@ -67,9 +75,12 @@ namespace SpriteTester
 
             foreach (string file in openFileDialogA.FileNames) 
             {
-                ListViewItem item = new ListViewItem(file);
-                ListViewItem.ListViewSubItem subitem = new ListViewItem.ListViewSubItem(item, Enum.GetName(typeof(Direction), Direction.Right));
-                item.SubItems.Add(subitem);
+                Regex regex = new Regex(@"[^\\]+$");
+                ListViewItem item = new ListViewItem(regex.Match(file).Value);
+                ListViewItem.ListViewSubItem subdirection = new ListViewItem.ListViewSubItem(item, Enum.GetName(typeof(Direction), Direction.Right));
+                ListViewItem.ListViewSubItem subpath = new ListViewItem.ListViewSubItem(item, file);
+                item.SubItems.Add(subdirection);
+                item.SubItems.Add(subpath);
                 itemlist.Add(item);
             }
 
@@ -118,7 +129,7 @@ namespace SpriteTester
             {
                 sprites.Add(
                     new Sprite(
-                        Image.FromFile(lvi.Text),
+                        Image.FromFile(lvi.SubItems[2].Text),
                         (Direction)Enum.Parse(typeof(Direction), lvi.SubItems[1].Text)
                     )
                 );
@@ -172,5 +183,14 @@ namespace SpriteTester
         }
 
         #endregion
+
+        private void openBackground(object sender, EventArgs e)
+        {
+            DialogResult DR = openFileDialogA.ShowDialog();
+            if (DR != DialogResult.OK)
+                return;
+
+            backgroundImage = Image.FromFile(openFileDialogA.FileName);
+        }
     }
 }

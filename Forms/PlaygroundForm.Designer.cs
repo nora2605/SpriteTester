@@ -29,7 +29,13 @@ namespace SpriteTester.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
+            // 
+            // timer
+            // 
+            this.timer.Tick += new System.EventHandler(this.timerTick);
             // 
             // PlaygroundForm
             // 
@@ -38,11 +44,16 @@ namespace SpriteTester.Forms
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Name = "PlaygroundForm";
             this.Text = "PlaygroundForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PlaygroundForm_FormClosing);
             this.Load += new System.EventHandler(this.PlaygroundForm_Load);
+            this.SizeChanged += new System.EventHandler(this.sizeChange);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.move);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Timer timer;
     }
 }
