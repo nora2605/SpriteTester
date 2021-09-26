@@ -46,24 +46,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PlaygroundForm.cs">
+    <Compile Include="Forms\ChangeDirectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PlaygroundForm.Designer.cs">
+    <Compile Include="Forms\ChangeDirectionForm.Designer.cs">
+      <DependentUpon>ChangeDirectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HelperClasses\Direction.cs" />
+    <Compile Include="Forms\PlaygroundForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PlaygroundForm.Designer.cs">
       <DependentUpon>PlaygroundForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SpriteSetupForm.cs">
+    <Compile Include="Forms\SpriteSetupForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SpriteSetupForm.Designer.cs">
+    <Compile Include="Forms\SpriteSetupForm.Designer.cs">
       <DependentUpon>SpriteSetupForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="HelperClasses\PGOptions.cs" />
+    <Compile Include="HelperClasses\Sprite.cs" />
+    <Compile Include="HelperClasses\ViewType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="PlaygroundForm.resx">
+    <EmbeddedResource Include="Forms\ChangeDirectionForm.resx">
+      <DependentUpon>ChangeDirectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PlaygroundForm.resx">
       <DependentUpon>PlaygroundForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SpriteSetupForm.resx">
+    <EmbeddedResource Include="Forms\SpriteSetupForm.resx">
       <DependentUpon>SpriteSetupForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
