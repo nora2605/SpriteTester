@@ -52,6 +52,10 @@ namespace SpriteTester
             this.numSpriteDelay = new System.Windows.Forms.NumericUpDown();
             this.labelSpriteDelay = new System.Windows.Forms.Label();
             this.buttonChangeBackground = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
+            this.buttonLoad = new System.Windows.Forms.Button();
+            this.saveFileDialogConf = new System.Windows.Forms.SaveFileDialog();
+            this.openFileDialogConf = new System.Windows.Forms.OpenFileDialog();
             this.itemEditor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSpriteDelay)).BeginInit();
             this.SuspendLayout();
@@ -297,11 +301,43 @@ namespace SpriteTester
             this.buttonChangeBackground.UseVisualStyleBackColor = true;
             this.buttonChangeBackground.Click += new System.EventHandler(this.openBackground);
             // 
+            // buttonSave
+            // 
+            this.buttonSave.Location = new System.Drawing.Point(690, 361);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(75, 23);
+            this.buttonSave.TabIndex = 19;
+            this.buttonSave.Text = "Save...";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
+            // 
+            // buttonLoad
+            // 
+            this.buttonLoad.Location = new System.Drawing.Point(771, 361);
+            this.buttonLoad.Name = "buttonLoad";
+            this.buttonLoad.Size = new System.Drawing.Size(75, 23);
+            this.buttonLoad.TabIndex = 20;
+            this.buttonLoad.Text = "Load...";
+            this.buttonLoad.UseVisualStyleBackColor = true;
+            this.buttonLoad.Click += new System.EventHandler(this.buttonLoad_Click);
+            // 
+            // saveFileDialogConf
+            // 
+            this.saveFileDialogConf.Filter = "Config Files|*.conf";
+            this.saveFileDialogConf.Title = "Save Configuration...";
+            // 
+            // openFileDialogConf
+            // 
+            this.openFileDialogConf.Filter = "Config Files|*.conf";
+            this.openFileDialogConf.Title = "Load Configuarion...";
+            // 
             // SpriteSetupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(857, 497);
+            this.Controls.Add(this.buttonLoad);
+            this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonChangeBackground);
             this.Controls.Add(this.labelSpriteDelay);
             this.Controls.Add(this.numSpriteDelay);
@@ -355,6 +391,10 @@ namespace SpriteTester
         private System.Windows.Forms.ContextMenuStrip itemEditor;
         private System.Windows.Forms.ToolStripMenuItem MIChangeDirection;
         private System.Windows.Forms.Button buttonChangeBackground;
+        private System.Windows.Forms.Button buttonSave;
+        private System.Windows.Forms.Button buttonLoad;
+        private System.Windows.Forms.SaveFileDialog saveFileDialogConf;
+        private System.Windows.Forms.OpenFileDialog openFileDialogConf;
     }
 }
 

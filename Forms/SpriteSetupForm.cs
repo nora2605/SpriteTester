@@ -16,18 +16,20 @@ namespace SpriteTester
     {
         private Image backgroundImage;
 
+        ListView[] listViews;
+
         public SpriteSetupForm()
         {
             InitializeComponent();
             initListViews();
         }
 
-        // ok listen im too lazy to do the same thing 4 times so fuck you im sacrificing the "beauty" of my code
+        // ok listen im too lazy to do the same thing 4 times
         private void initListViews()
         {
             // array of list views in the form
-            ListView[] listViews = { listActionSprites, listIdleSprites, listJumpingSprites, listWalkingSprites };
-            for (int i = 0; i < listViews.Length; i++) // iterate over them idfk
+            listViews = new ListView[] { listActionSprites, listIdleSprites, listJumpingSprites, listWalkingSprites };
+            for (int i = 0; i < listViews.Length; i++) // iterate over them
             {
                 ColumnHeader[] columns = new ColumnHeader[3]; //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                 columns[0] = new ColumnHeader();
@@ -103,6 +105,104 @@ namespace SpriteTester
             }
         }
 
+        #region Config
+
+        private string GetConfig()
+        {
+            /*
+             * Output format:
+             * List {
+             *     file.png;Left;C:\path\to\file.png
+             * }
+             */
+
+            string config = "";
+            for (int i = 0; i < listViews.Length; i++)
+            {
+                if (listViews[i].Items.Count == 0) continue;
+                config += $"{listViews[i].Name}{{\n";
+                foreach (ListViewItem t in listViews[i].Items)
+                {
+                    config += $"\t{t.Text};{t.SubItems[1].Text};{t.SubItems[2].Text}\n";
+                }
+                config += $"}}\n";
+            }
+            return config;
+        }
+
+        private void SetConfig(string config)
+        {
+            /*
+             * Input format:
+             * List {
+             *     file.png;Left;C:\path\to\file.png
+             * }
+             */
+            string[] listConfigs = config.Split('{', '}');
+            /*
+             * [List,
+             *     file.png;Left;C:\path\to\file.png]
+             */
+            string curList = "";
+            foreach (string s in listConfigs)
+            {
+                if (curList == "") // "List  "
+                {
+                    curList = s.Trim(); // "List"
+                    continue;
+                }
+                for (int i = 0; i < listViews.Length; i++)
+                {
+                    if (listViews[i].Name == curList)
+                    {
+                        foreach (string l in s.Split('\n')) // For every item in the original list
+                        {
+                            if (string.IsNullOrEmpty(l)) continue;
+                            string[] sitems = l.Trim().Split(';');
+                            ListViewItem item = new ListViewItem(sitems[0]);
+                            ListViewItem.ListViewSubItem subdirection = new ListViewItem.ListViewSubItem(item, sitems[1]);
+                            ListViewItem.ListViewSubItem subpath = new ListViewItem.ListViewSubItem(item, sitems[2]);
+                            item.SubItems.Add(subdirection);
+                            item.SubItems.Add(subpath);
+                            listViews[i].Items.Add(item);
+                        }
+                        break;
+                    }
+                }
+                curList = "";
+            }
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            string config = GetConfig();
+            if (string.IsNullOrEmpty(config))
+            {
+                MessageBox.Show("Nothing to Save!");
+                return;
+            }
+            DialogResult DR = saveFileDialogConf.ShowDialog();
+            if (DR != DialogResult.OK) return;
+            System.IO.File.WriteAllText(saveFileDialogConf.FileName, config);
+            MessageBox.Show("Saved!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void buttonLoad_Click(object sender, EventArgs e)
+        {
+            DialogResult DR = openFileDialogConf.ShowDialog();
+            if (DR != DialogResult.OK) return;
+            string config = System.IO.File.ReadAllText(openFileDialogConf.FileName);
+            if (string.IsNullOrEmpty(config))
+            {
+                MessageBox.Show("Failed to load! (Empty File?)");
+                return;
+            }
+            SetConfig(config);
+            MessageBox.Show("Loaded!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        #endregion
+
         private void changeDirection(object sender, EventArgs e)
         {
             ListView caller = itemEditor.SourceControl as ListView;
@@ -117,10 +217,10 @@ namespace SpriteTester
 
         private void showHelpDialog(object sender, EventArgs e)
         {
-
+            MessageBox.Show("not implemented yet");
         }
 
-        #region Boring Get Functions
+        #region Get Functions
 
         private Sprite[] GetIdleSprites()
         {
@@ -144,7 +244,7 @@ namespace SpriteTester
             {
                 sprites.Add(
                     new Sprite(
-                        Image.FromFile(lvi.Text),
+                        Image.FromFile(lvi.SubItems[2].Text),
                         (Direction)Enum.Parse(typeof(Direction), lvi.SubItems[1].Text)
                     )
                 );
@@ -159,7 +259,7 @@ namespace SpriteTester
             {
                 sprites.Add(
                     new Sprite(
-                        Image.FromFile(lvi.Text),
+                        Image.FromFile(lvi.SubItems[2].Text),
                         (Direction)Enum.Parse(typeof(Direction), lvi.SubItems[1].Text)
                     )
                 );
@@ -174,7 +274,7 @@ namespace SpriteTester
             {
                 sprites.Add(
                     new Sprite(
-                        Image.FromFile(lvi.Text),
+                        Image.FromFile(lvi.SubItems[2].Text),
                         (Direction)Enum.Parse(typeof(Direction), lvi.SubItems[1].Text)
                     )
                 );
@@ -192,5 +292,7 @@ namespace SpriteTester
 
             backgroundImage = Image.FromFile(openFileDialogA.FileName);
         }
+
+        
     }
 }

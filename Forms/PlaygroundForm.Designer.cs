@@ -1,5 +1,4 @@
-﻿
-namespace SpriteTester.Forms
+﻿namespace SpriteTester.Forms
 {
     partial class PlaygroundForm
     {
@@ -48,6 +47,7 @@ namespace SpriteTester.Forms
             this.Load += new System.EventHandler(this.PlaygroundForm_Load);
             this.SizeChanged += new System.EventHandler(this.sizeChange);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.move);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.stopMove);
             this.ResumeLayout(false);
 
         }
