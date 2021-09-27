@@ -28,7 +28,6 @@ namespace SpriteTester.Forms
         int platformHeight;
 
         int phase = 0;
-        int toIdle = 10;
 
         public PlaygroundForm()
         {
@@ -43,23 +42,40 @@ namespace SpriteTester.Forms
             platformHeight = Height / 2;
             zyra.posX = Width / 2;
 
-            timer.Interval = options.spriteDelay;
-            timer.Enabled = true;
-
             g = CreateGraphics();
             buffer = BufferedGraphicsManager.Current.Allocate(g, this.ClientRectangle);
 
             sprites = remapSprites();
 
-            // Check for Base Idle Sprites
+            // Check for Base Idle Sprites (TD)
+
+            if (sprites[(int)ActionType.Idle][(int)Direction.Left].Length == 0
+                || sprites[(int)ActionType.Idle][(int)Direction.Right].Length == 0)
+            {
+                NoSprite();
+                return;
+            }
+            if (options.viewType == ViewType.TopDown && (sprites[(int)ActionType.Idle][(int)Direction.Top].Length == 0
+                    || sprites[(int)ActionType.Idle][(int)Direction.Bottom].Length == 0))
+            {
+                NoSprite();
+                return;
+            }
+
+            timer.Interval = options.spriteDelay;
+            timer.Enabled = true;
 
             if (options.background == null)
                 return;
             bgPresent = true;
-
             aspectRatio = (float)options.background.Size.Width / (float)options.background.Size.Height;
-
             sizeChange(null, null);
+        }
+
+        private void NoSprite()
+        {
+            MessageBox.Show("No Idle sprite in each required Direction", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Close();
         }
 
         private void sizeChange(object sender, EventArgs e)
@@ -82,31 +98,44 @@ namespace SpriteTester.Forms
         /// <param name="e">Event Arguments</param>
         private void timerTick(object sender, EventArgs e)
         {
+            // Logic
+
+            phase = (phase + 1) % GetMaxSprite(SpriteExist(zyra.actiontype, zyra.facing) ? zyra.actiontype : ActionType.Idle, zyra.facing);
+
+            if (zyra.actiontype == ActionType.Walking)
+            {
+                switch (zyra.facing)
+                {
+                    case Direction.Left:
+                        zyra.posX -= 10;
+                        break;
+                    case Direction.Right:
+                        zyra.posX += 10;
+                        break;
+                    case Direction.Top:
+                        zyra.posY -= 10;
+                        break;
+                    case Direction.Bottom:
+                        zyra.posY += 10;
+                        break;
+                }
+            }
+
             // Render
             if (bgPresent)
                 buffer.Graphics.DrawImage(options.background, 0, 0, Width, Height);
+            else
+                buffer.Graphics.Clear(Color.Black);
 
-            Image curSprite;
-
-            // If the current action type is available as sprite, choose that
-            // If not, take the idle sprite in the same direction and **correct phase**
-            
-
-            buffer.Graphics.DrawImage(sprites[(int)ActionType.Idle][(int)Direction.Right][phase], new Point(zyra.posX, zyra.posY));
+            buffer.Graphics.DrawImage(SpriteExist(zyra.actiontype, zyra.facing) ? sprites[(int)zyra.actiontype][(int)zyra.facing][phase] : sprites[(int)ActionType.Idle][(int)zyra.facing][phase], new Point(zyra.posX, zyra.posY));
 
             buffer.Render(g);
+        }
 
-            // Logic
-
-            if (zyra.actiontype != ActionType.Idle)
-            {
-                // Execute Idle Counter - go back to idle mode after certain time
-                toIdle--;
-                if (toIdle == 0)
-                {
-                    zyra.actiontype = ActionType.Idle;
-                }
-            }
+        //Check if a Sprite exists for given AT and DIR
+        private bool SpriteExist(ActionType at, Direction dir)
+        {
+            return !(sprites[(int)at][(int)dir].Length == 0);
         }
 
         // Get sprite list length for certain action and direction
@@ -172,22 +201,32 @@ namespace SpriteTester.Forms
             {
                 case Keys.W:
                 case Keys.Up:
-
+                    if (options.viewType == ViewType.TopDown)
+                    {
+                        zyra.facing = Direction.Top;
+                        zyra.actiontype = ActionType.Walking;
+                    }
                     break;
 
                 case Keys.S:
                 case Keys.Down:
-
+                    if (options.viewType == ViewType.TopDown)
+                    {
+                        zyra.facing = Direction.Bottom;
+                        zyra.actiontype = ActionType.Walking;
+                    }
                     break;
 
                 case Keys.A:
                 case Keys.Left:
                     zyra.facing = Direction.Left;
+                    zyra.actiontype = ActionType.Walking;
                     break;
 
                 case Keys.D:
                 case Keys.Right:
                     zyra.facing = Direction.Right;
+                    zyra.actiontype = ActionType.Walking;
                     break;
 
                 case Keys.Space:
@@ -197,6 +236,34 @@ namespace SpriteTester.Forms
                 case Keys.Q:
                 case Keys.E:
                     zyra.actiontype = ActionType.Acting;
+                    break;
+            }
+        }
+
+        private void stopMove(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.W:
+                case Keys.Up:
+                    if (options.viewType == ViewType.TopDown)
+                        zyra.actiontype = ActionType.Idle;
+                    break;
+
+                case Keys.S:
+                case Keys.Down:
+                    if (options.viewType == ViewType.TopDown)
+                        zyra.actiontype = ActionType.Idle;
+                    break;
+
+                case Keys.A:
+                case Keys.Left:
+                    zyra.actiontype = ActionType.Idle;
+                    break;
+
+                case Keys.D:
+                case Keys.Right:
+                    zyra.actiontype = ActionType.Idle;
                     break;
             }
         }
