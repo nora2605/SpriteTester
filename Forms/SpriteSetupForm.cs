@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using SpriteTester.Forms;
+﻿using SpriteTester.Forms;
 using SpriteTester.HelperClasses;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace SpriteTester
 {
@@ -56,11 +52,11 @@ namespace SpriteTester
         {
             PlaygroundForm playground = new PlaygroundForm();
             playground.options = new PGOptions(
-                GetIdleSprites(), 
-                GetWalkingSprites(), 
-                GetJumpingSprites(), 
-                GetActionSprites(), 
-                (int)numSpriteDelay.Value, 
+                GetIdleSprites(),
+                GetWalkingSprites(),
+                GetJumpingSprites(),
+                GetActionSprites(),
+                (int)numSpriteDelay.Value,
                 radioButtonSideView.Checked ? ViewType.Side : ViewType.TopDown,
                 backgroundImage
             );
@@ -75,7 +71,7 @@ namespace SpriteTester
 
             List<ListViewItem> itemlist = new List<ListViewItem>();
 
-            foreach (string file in openFileDialogA.FileNames) 
+            foreach (string file in openFileDialogA.FileNames)
             {
                 Regex regex = new Regex(@"[^\\]+$");
                 ListViewItem item = new ListViewItem(regex.Match(file).Value);
@@ -293,6 +289,6 @@ namespace SpriteTester
             backgroundImage = Image.FromFile(openFileDialogA.FileName);
         }
 
-        
+
     }
 }
