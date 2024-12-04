@@ -1,34 +1,33 @@
-﻿using System.Windows.Forms;
+﻿using SpriteTester.HelperClasses;
 
-namespace SpriteTester.Forms
+namespace SpriteTester.Forms;
+
+public partial class ChangeDirectionForm : Form
 {
-    public partial class ChangeDirectionForm : Form
+    public Direction GetDirection()
     {
-        public Direction GetDirection()
+        switch (dropDownDirection.Text)
         {
-            switch (this.dropDownDirection.Text)
-            {
-                case "Left":
-                    return Direction.Left;
-                case "Right":
-                    return Direction.Right;
-                case "Top":
-                    return Direction.Top;
-                case "Bottom":
-                    return Direction.Bottom;
-                default:
-                    return Direction.Right;
-            }
+            case "Left":
+                return Direction.Left;
+            case "Right":
+                return Direction.Right;
+            case "Top":
+                return Direction.Top;
+            case "Bottom":
+                return Direction.Bottom;
+            default:
+                return Direction.Right;
         }
+    }
 
-        public ChangeDirectionForm()
-        {
-            InitializeComponent();
+    public ChangeDirectionForm()
+    {
+        InitializeComponent();
 
-            this.CancelButton = buttonCancel;
-            this.AcceptButton = buttonOK;
+        CancelButton = buttonCancel;
+        AcceptButton = buttonOK;
 
-            this.dropDownDirection.SelectedIndex = 0;
-        }
+        dropDownDirection.SelectedIndex = 0;
     }
 }

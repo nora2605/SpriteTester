@@ -1,19 +1,18 @@
-﻿using System;
-using System.Windows.Forms;
+using SpriteTester.Forms;
 
-namespace SpriteTester
+namespace SpriteTester;
+
+internal static class Program
 {
-    static class Program
+    /// <summary>
+    ///  The main entry point for the application.
+    /// </summary>
+    [STAThread]
+    static void Main()
     {
-        /// <summary>
-        /// Main Entry Point for the Application
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SpriteSetupForm());
-        }
+        // To customize application configuration such as set high DPI settings or default font,
+        // see https://aka.ms/applicationconfiguration.
+        ApplicationConfiguration.Initialize();
+        Application.Run(new SpriteSetupForm());
     }
 }
