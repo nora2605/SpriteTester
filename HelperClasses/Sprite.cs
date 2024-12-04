@@ -1,16 +1,12 @@
-﻿using System.Drawing;
-
-namespace SpriteTester.HelperClasses
+﻿namespace SpriteTester.HelperClasses;
+public class Sprite
 {
-    public class Sprite
-    {
-        public Image image;
-        public Direction direction;
+    public Image image;
+    public Direction direction;
 
-        public Sprite(Image image, Direction direction)
-        {
-            this.image = image;
-            this.direction = direction;
-        }
+    public Sprite(Image image, Direction direction)
+    {
+        this.image = image;
+        this.direction = direction;
     }
 }
